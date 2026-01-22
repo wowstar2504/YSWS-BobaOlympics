@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ultimate Brainrot</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: black;
+    height: 100%;
+    width: 100%;
+    cursor: pointer; /* encourages click */
+  }
+
+  .gif {
+    position: absolute;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    animation: spin 0.5s linear infinite, rgbFlash 0.1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes rgbFlash {
+    0% { filter: hue-rotate(0deg); }
+    25% { filter: hue-rotate(90deg); }
+    50% { filter: hue-rotate(180deg); }
+    75% { filter: hue-rotate(270deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<div id="container"></div>
+
+<script>
+const container = document.getElementById('container');
+const totalGifs = 150;
+
+// Create GIFs
+for (let i = 0; i < totalGifs; i++) {
+    const gif = document.createElement('img');
+    gif.src = 'tenor.gif';
+    gif.className = 'gif';
+
+    gif.style.top = Math.random() * window.innerHeight + 'px';
+    gif.style.left = Math.random() * window.innerWidth + 'px';
+
+    const size = 50 + Math.random() * 150;
+    gif.style.width = size + 'px';
+    gif.style.height = size + 'px';
+
+    const spinSpeed = 0.3 + Math.random() * 1.2;
+    const flashSpeed = 0.05 + Math.random() * 0.2;
+    gif.style.animation = `spin ${spinSpeed}s linear infinite, rgbFlash ${flashSpeed}s linear infinite`;
+
+    container.appendChild(gif);
+}
+
+// Start 3 audio layers on first interaction
+let audioStarted = false;
+function startAudio() {
+    if (audioStarted) return;
+    audioStarted = true;
+
+    for (let i = 0; i < 3; i++) {
+        const audio = document.createElement('audio');
+        audio.src = 'sound.mp4';
+        audio.loop = true;
+        audio.volume = 1; // max
+        audio.play().catch(() => {
+            console.log('Audio playback failed.');
+        });
+        document.body.appendChild(audio);
+    }
+}
+window.addEventListener('click', startAudio);
+window.addEventListener('keydown', startAudio);
+</script>
+
+</body>
+</html>
